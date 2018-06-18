@@ -173,7 +173,6 @@
     password VARCHAR(200) NOT NULL ,
     usertoken VARCHAR(250) NOT NULL
     
-    
 >photobook Table (사진첩 테이블)
 
     name VARCHAR(200) NOT NULL ,
@@ -181,7 +180,8 @@
     count INT(11) NOT NULL ,
     summary VARCHAR(250) NOT NULL ,
     since VARCHAR(20) NOT NULL ,
-    booktoken VARCHAR(250) NOT NULL
+    booktoken VARCHAR(250) NOT NULL,
+    usertoken VARCHAR(250) NOT NULL
 
 >photo Table (사진 테이블)
 
