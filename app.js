@@ -5,7 +5,7 @@ var multer = require('multer')
 var logger = require('morgan')
 var db = require('./sql')
 var app = express()
-var PORT = process.env.PORT || 3000
+var PORT = process.env.PORT || 5000
 
 app.use(bodyParser.urlencoded({
     extended : true

@@ -31,7 +31,7 @@ function photobook(app, db, multer, RandomString) {
 
         date = yyyy+"."+mm+"."+dd
 
-        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count, usertoken) VALUES (?,?,?,?,?,?,?)', [body.name, "http://soylatte.kr:3000/"+req.file.path, body.summary, date, RandomString.generate(10), 0, body.usertoken], (err)=>{
+        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count, usertoken) VALUES (?,?,?,?,?,?,?)', [body.name, "http://soylatte.kr:5000/"+req.file.path, body.summary, date, RandomString.generate(10), 0, body.usertoken], (err)=>{
             if(err) throw err
             else {
                 res.send(200, {success:true, message:"사진첩을 새로 생성했습니다."})
@@ -67,7 +67,7 @@ function photobook(app, db, multer, RandomString) {
     app.post('/photobook/photo/add', upload.single('file'), (req, res)=>{
         var body = req.body
         var file = req.file
-        db.sql.query('INSERT INTO photo (booktoken, summary, photo) VALUES (?,?,?)', [body.booktoken, body.summary, "http://soylatte.kr:3000/"+file.path], (err)=>{
+        db.sql.query('INSERT INTO photo (booktoken, summary, photo) VALUES (?,?,?)', [body.booktoken, body.summary, "http://soylatte.kr:5000/"+file.path], (err)=>{
             if(err) throw err
             else {
                 db.sql.query('SELECT count FROM photobook WHERE booktoken = ?', [body.booktoken], (err, data)=>{

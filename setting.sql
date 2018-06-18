@@ -9,7 +9,7 @@ CREATE TABLE user(
   birthday VARCHAR(20) NOT NULL ,
   password VARCHAR(200) NOT NULL ,
   usertoken VARCHAR(250) NOT NULL
-);
+)DEFAULT CHARSET=utf8;
 
 CREATE TABLE photobook(
   name VARCHAR(200) NOT NULL ,
@@ -19,10 +19,10 @@ CREATE TABLE photobook(
   since VARCHAR(20) NOT NULL ,
   booktoken VARCHAR(250) NOT NULL,
   usertoken VARCHAR(250) NOT NULL
-);
+)DEFAULT CHARSET=utf8;
 
 CREATE TABLE photo(
   booktoken VARCHAR(250) NOT NULL ,
   summary VARCHAR(250) NOT NULL ,
   photo VARCHAR(250) NOT NULL
-);
+)DEFAULT CHARSET=utf8;
