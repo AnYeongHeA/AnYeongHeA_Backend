@@ -16,33 +16,25 @@ function photobook(app, db, multer, RandomString) {
     app.post('/photobook/make', upload.single('file'), (req, res)=>{
         var body = req.body;
         console.log(req.file)
-        db.sql.query('SELECT * FROM photobook WHERE name = ?', [body.name], (err, data)=>{
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        date = yyyy+"."+mm+"."+dd
+
+        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken) VALUES (?,?,?,?,?)', [body.name, "http://soylatte.kr:3000/"+req.file.path, body.summary, date, RandomString.generate(10)], (err)=>{
             if(err) throw err
-            else if(data[0]){
-                res.send(409, {success:false, message:"이미 존재하는 포토북입니다."})
-            }
             else {
-                var today = new Date();
-                var dd = today.getDate();
-                var mm = today.getMonth()+1; //January is 0!
-                var yyyy = today.getFullYear();
-
-                if(dd<10) {
-                    dd='0'+dd
-                }
-
-                if(mm<10) {
-                    mm='0'+mm
-                }
-
-                date = yyyy+"."+mm+"."+dd
-
-                db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken) VALUES (?,?,?,?,?)', [body.name, "http://soylatte.kr:3000/"+req.file.path, body.summary, date, RandomString.generate(10)], (err)=>{
-                    if(err) throw err
-                    else {
-                        res.send(200, {success:true, message:"사진첩을 새로 생성했습니다."})
-                    }
-                })
+                res.send(200, {success:true, message:"사진첩을 새로 생성했습니다."})
             }
         })
     })
