@@ -82,21 +82,43 @@
     name : 사진첩이름
     file : 사진 (사진첩 배경)
     summary : 사진첩설명
+    usertoken : 사진첩을 만든 유저의 토큰
     
 >Return Values
 >>Success
 
     HTTP : 200, {success:true, message:"사진첩을 새로 생성했습니다."}
     
-#### /photobook/list (사진첩 리스트)
+#### /photobook/list (유저가 작성할수 있는 사진첩 리스트)
+>Requiring Params
+
+    usertoken : 로그인 되어있는 유저의 토큰
+    
+>Return Values
+>>Success
+
+    HTTP : 200, JSONArray(사진첩데이터들)
+    
+#### /photobook/list/all (모든 사진첩 리스트)
 >Requiring Params
 
     No Params
     
 >Return Values
 >>Success
-
+    
     HTTP : 200, JSONArray(사진첩데이터들)
+    
+#### /photobook/photo/show (사진 상세보기)
+>Requiring Params
+
+    url : 사진 url
+    
+>Return Values
+>>Success
+    
+    HTTP : 200, JSONObject(사진상세정보)
+    
     
 #### /photobook/photo/add (사진 업로드)
 >Requiring Params

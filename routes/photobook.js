@@ -31,7 +31,7 @@ function photobook(app, db, multer, RandomString) {
 
         date = yyyy+"."+mm+"."+dd
 
-        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count) VALUES (?,?,?,?,?,?)', [body.name, "http://soylatte.kr:3000/"+req.file.path, body.summary, date, RandomString.generate(10), 0], (err)=>{
+        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count, usertoken) VALUES (?,?,?,?,?,?,?)', [body.name, "http://soylatte.kr:3000/"+req.file.path, body.summary, date, RandomString.generate(10), 0, body.usertoken], (err)=>{
             if(err) throw err
             else {
                 res.send(200, {success:true, message:"사진첩을 새로 생성했습니다."})
@@ -40,6 +40,19 @@ function photobook(app, db, multer, RandomString) {
     })
 
     app.post('/photobook/list', (req, res)=>{
+        var body = req.body
+        db.sql.query("SELECT * FROM photobook WHERE usertoken = ?", [body.usertoken], (err, data)=>{
+            if(err) throw err
+            else if(data[0]){
+                res.send(200, data)
+            }
+            else{
+                res.send(200, [])
+            }
+        })
+    })
+
+    app.post('/photobook/list/all', (req, res)=>{
         db.sql.query("SELECT * FROM photobook", (err, data)=>{
             if(err) throw err
             else if(data[0]){
@@ -83,10 +96,27 @@ function photobook(app, db, multer, RandomString) {
         db.sql.query('SELECT * FROM photo WHERE booktoken = ?', [body.booktoken], (err, data)=>{
             if(err) throw err
             else if(data[0]){
-                res.send(200, data)
+                var array = new Array()
+                for (var i=0; i<data.length; i++){
+                    array.push(data[i].photo)
+                }
+                res.send(200, array)
             }
             else{
                 res.send(200, [])
+            }
+        })
+    })
+
+    app.post('/photobook/photo/show', (req, res)=>{
+        var body = req.body
+        db.sql.query('SELECT * FROM photo WHERE photo = ?', [body.url], (err, data)=>{
+            if(err) throw err
+            else if(data[0]){
+                res.send(data[0])
+            }
+            else{
+                res.send(401, {success:false, message:"이미지를 찾을수 없습니다."})
             }
         })
     })
@@ -95,7 +125,11 @@ function photobook(app, db, multer, RandomString) {
         db.sql.query('SELECT * FROM photo', (err, data)=>{
             if(err) throw err
             else if(data[0]){
-                res.send(200, data)
+                var array = new Array()
+                for (var i=0; i<data.length; i++){
+                    array.push(data[i].photo)
+                }
+                res.send(200, array)
             }
             else {
                 res.send(200, [])
