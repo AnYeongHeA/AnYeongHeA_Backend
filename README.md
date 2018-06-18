@@ -140,3 +140,29 @@
 
     HTTP : 200, JSONArray(검색된 이름의 사진첩들)
   
+## Database
+### Table
+>User Table
+
+    username VARCHAR(100) NOT NULL ,
+    schoolName VARCHAR(150) NOT NULL,
+    schoolNumber VARCHAR(20) NOT NULL ,
+    birthday VARCHAR(20) NOT NULL ,
+    password VARCHAR(200) NOT NULL ,
+    usertoken VARCHAR(250) NOT NULL
+    
+    
+>photobook Table (사진첩 테이블)
+
+    name VARCHAR(200) NOT NULL ,
+    photo VARCHAR(200) NOT NULL ,
+    count INT(11) NOT NULL ,
+    summary VARCHAR(250) NOT NULL ,
+    since VARCHAR(20) NOT NULL ,
+    booktoken VARCHAR(250) NOT NULL
+
+>photo Table (사진 테이블)
+
+    booktoken VARCHAR(250) NOT NULL ,
+    summary VARCHAR(250) NOT NULL ,
+    photo VARCHAR(250) NOT NULL

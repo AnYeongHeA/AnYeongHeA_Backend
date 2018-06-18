@@ -31,7 +31,7 @@ function photobook(app, db, multer, RandomString) {
 
         date = yyyy+"."+mm+"."+dd
 
-        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken) VALUES (?,?,?,?,?)', [body.name, "http://soylatte.kr:3000/"+req.file.path, body.summary, date, RandomString.generate(10)], (err)=>{
+        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count) VALUES (?,?,?,?,?,?)', [body.name, "http://soylatte.kr:3000/"+req.file.path, body.summary, date, RandomString.generate(10), 0], (err)=>{
             if(err) throw err
             else {
                 res.send(200, {success:true, message:"사진첩을 새로 생성했습니다."})
@@ -57,7 +57,23 @@ function photobook(app, db, multer, RandomString) {
         db.sql.query('INSERT INTO photo (booktoken, summary, photo) VALUES (?,?,?)', [body.booktoken, body.summary, "http://soylatte.kr:3000/"+file.path], (err)=>{
             if(err) throw err
             else {
-                res.send(200, {success:true, message:"사진을 성공적으로 등록했습니다."})
+                db.sql.query('SELECT count FROM photobook WHERE booktoken = ?', [body.booktoken], (err, data)=>{
+                    console.log(data[0].count)
+                    if(err) throw err
+                    else if(data[0]){
+                        count = data[0].count+1
+                        console.log(count)
+                        db.sql.query('UPDATE photobook SET count = ? WHERE booktoken = ?', [count, body.booktoken], (err)=>{
+                            if(err) throw err
+                            else{
+                                res.send(200, {success:true, message:"사진을 성공적으로 등록했습니다."})
+                            }
+                        })
+                    }
+                })
+
+
+
             }
         })
     })
@@ -76,7 +92,6 @@ function photobook(app, db, multer, RandomString) {
     })
 
     app.post('/photobook/photo/all', (req, res)=>{
-        var body = req.body
         db.sql.query('SELECT * FROM photo', (err, data)=>{
             if(err) throw err
             else if(data[0]){
