@@ -99,16 +99,6 @@
 
     HTTP : 200, JSONArray(사진첩데이터들)
     
-#### /photobook/list/all (모든 사진첩 리스트)
->Requiring Params
-
-    No Params
-    
->Return Values
->>Success
-    
-    HTTP : 200, JSONArray(사진첩데이터들)
-    
 #### /photobook/photo/show (사진 상세보기)
 >Requiring Params
 
