@@ -1,6 +1,6 @@
 module.exports = photobook
 
-function photobook(app, db, multer, RandomString) {
+function photobook(app, db, multer, RandomString, async, sleep) {
 
     const storage = multer.diskStorage({
         destination: (req, file, cb)=>{
@@ -67,30 +67,32 @@ function photobook(app, db, multer, RandomString) {
     app.post('/photobook/photo/add', upload.single('file'), (req, res)=>{
         var body = req.body
         var file = req.file
-        db.sql.query('INSERT INTO photo (booktoken, summary, photo) VALUES (?,?,?)', [body.booktoken, body.summary, "http://soylatte.kr:5000/"+file.path], (err)=>{
+        db.sql.query('SELECT * FROM photobook WHERE booktoken = ?', [body.booktoken], (err, datas)=>{
             if(err) throw err
-            else {
-                db.sql.query('SELECT count FROM photobook WHERE booktoken = ?', [body.booktoken], (err, data)=>{
-                    console.log(data[0].count)
+            else if(datas[0]){
+                db.sql.query('INSERT INTO photo (booktoken, summary, photo, usertoken) VALUES (?,?,?,?)', [body.booktoken, body.summary, "http://soylatte.kr:5000/"+file.path, datas[0].usertoken], (err)=>{
                     if(err) throw err
-                    else if(data[0]){
-                        count = data[0].count+1
-                        console.log(count)
-                        db.sql.query('UPDATE photobook SET count = ? WHERE booktoken = ?', [count, body.booktoken], (err)=>{
+                    else {
+                        db.sql.query('SELECT count FROM photobook WHERE booktoken = ?', [body.booktoken], (err, data)=>{
+                            console.log(data[0].count)
                             if(err) throw err
-                            else{
-                                res.send(200, {success:true, message:"사진을 성공적으로 등록했습니다."})
+                            else if(data[0]){
+                                count = data[0].count+1
+                                console.log(count)
+                                db.sql.query('UPDATE photobook SET count = ? WHERE booktoken = ?', [count, body.booktoken], (err)=>{
+                                    if(err) throw err
+                                    else{
+                                        res.send(200, {success:true, message:"사진을 성공적으로 등록했습니다."})
+                                    }
+                                })
                             }
                         })
                     }
                 })
-
-
-
             }
         })
-    })
 
+    })
     app.post('/photobook/photo/list', (req, res)=>{
         var body = req.body
         db.sql.query('SELECT * FROM photo WHERE booktoken = ?', [body.booktoken], (err, data)=>{
@@ -121,20 +123,55 @@ function photobook(app, db, multer, RandomString) {
         })
     })
 
-    app.post('/photobook/photo/all', (req, res)=>{
-        db.sql.query('SELECT * FROM photo', (err, data)=>{
+    app.post('/photobook/photo/all', (req, res)=> {
+        var body = req.body
+        var array = new Array()
+        db.sql.query('SELECT * FROM photo WHERE usertoken = ?', [body.usertoken], (err, data)=>{
             if(err) throw err
             else if(data[0]){
-                var array = new Array()
-                for (var i=0; i<data.length; i++){
+                for(var i=0; i<data.length; i++){
                     array.push(data[i].photo)
                 }
                 res.send(200, array)
             }
-            else {
+            else{
                 res.send(200, [])
             }
         })
+        // async.waterfall(
+        //     [
+        //         function (callback){
+        //             console.log("!!!!!!!!!!!!!!!!!!!!!!")
+        //             db.sql.query('SELECT * FROM photobook WHERE usertoken = ?', [body.usertoken], (err, data) => {
+        //                 if (data[0]) {
+        //                     console.log(data[0])
+        //                     callback(null, data)
+        //                 }
+        //             })
+        //         },
+        //         function (data, callback) {
+        //             console.log('@@@@@@@@@@@@@@@@@@@@@@@')
+        //             for (var i = 0; i < data.length; i++) {
+        //                 db.sql.query('SELECT photo FROM photo WHERE booktoken = ?', [data[i].booktoken], (err, datas) => {
+        //                     if (datas[0]) {
+        //                         //console.log(datas)
+        //                         for (var i = 0; i < datas.length; i++) {
+        //                             array.push(datas[i].photo)
+        //                             console.log(array)
+        //                             callback(null)
+        //                         }
+        //                     }
+        //                 })
+        //             }
+        //             console.log('@@@@@@@@@@@@@@@@@@@@@@@')
+        //         }
+        //     ],
+        //     function (err) {
+        //         if(err) throw err
+        //         console.log(array)
+        //         res.send(array)
+        //     }
+        // )
     })
 
     app.post('/photobook/search', (req, res)=>{

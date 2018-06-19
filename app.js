@@ -3,6 +3,8 @@ var bodyParser = require('body-parser')
 var RandomString = require('randomstring')
 var multer = require('multer')
 var logger = require('morgan')
+var async = require('async')
+var sleep = require('sleep')
 var db = require('./sql')
 var app = express()
 var PORT = process.env.PORT || 5000
@@ -20,4 +22,4 @@ app.listen(PORT, ()=>{
 })
 
 require('./routes/auth')(app, db, RandomString)
-require('./routes/photobook')(app, db, multer, RandomString)
+require('./routes/photobook')(app, db, multer, RandomString, async, sleep)

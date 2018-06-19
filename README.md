@@ -145,12 +145,12 @@
 #### /photobook/photo/all (DB에 업로드 되어있는 모든 사진리스트)
 >Requiring Params
 
-    No Params
+    usertoken : 유저고유토큰
     
 >Return Values
 >>Success
 
-    HTTP : 200, JSONArray(모든 사진 리스트)
+    HTTP : 200, JSONArray(유저가 소유한 사진 리스트)
     
 #### /photobook/search (이름을 이용한 사진첩 검색)
 >Requiring Params
