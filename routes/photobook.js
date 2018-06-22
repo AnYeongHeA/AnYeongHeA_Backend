@@ -39,6 +39,19 @@ function photobook(app, db, multer, RandomString, async, sleep) {
         })
     })
 
+    app.post('/photobook/show', (req, res)=>{
+        var body = req.body
+        db.sql.query('SELECT * FROM photobook WHERE booktoken = ?', [body.booktoken], (err, data)=>{
+            if(err) throw err
+            else if(data[0]){
+                res.send(data[0])
+            }
+            else{
+                res.send(403, {success:false, message:"씨발"})
+            }
+        })
+    })
+
     app.post('/photobook/list', (req, res)=>{
         var body = req.body
         db.sql.query("SELECT * FROM photobook WHERE usertoken = ?", [body.usertoken], (err, data)=>{

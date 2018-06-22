@@ -98,6 +98,20 @@
 
     HTTP : 200, JSONArray(사진첩데이터들)
     
+#### /photobook/show (사진첩 상세 보기)
+>Requiring Params
+
+    booktoken : 사진첩 토큰
+    
+>Return Values
+>>Success
+
+    HTTP : 200, JSONObject(사진첩데이타)
+    
+>>Data Not Founded
+
+    HTTP : 403, {success:false, message:"씨발"}
+    
 #### /photobook/photo/show (사진 상세보기)
 >Requiring Params
 
