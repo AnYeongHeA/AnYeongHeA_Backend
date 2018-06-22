@@ -13,7 +13,7 @@ function photobook(app, db, multer, RandomString, async, sleep) {
     const upload = multer({ storage: storage})
 
 
-    app.post('/photobook/make', upload.single('file'), (req, res)=>{
+    app.post('/photobook/make', (req, res)=>{
         var body = req.body;
         console.log(req.file)
         var today = new Date();
@@ -31,7 +31,7 @@ function photobook(app, db, multer, RandomString, async, sleep) {
 
         date = yyyy+"."+mm+"."+dd
 
-        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count, usertoken) VALUES (?,?,?,?,?,?,?)', [body.name, "http://soylatte.kr:5000/"+req.file.path, body.summary, date, RandomString.generate(10), 0, body.usertoken], (err)=>{
+        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count, usertoken) VALUES (?,?,?,?,?,?,?)', [body.name, "", body.summary, date, RandomString.generate(10), 0, body.usertoken], (err)=>{
             if(err) throw err
             else {
                 res.send(200, {success:true, message:"사진첩을 새로 생성했습니다."})
@@ -73,12 +73,17 @@ function photobook(app, db, multer, RandomString, async, sleep) {
                 db.sql.query('INSERT INTO photo (booktoken, summary, photo, usertoken) VALUES (?,?,?,?)', [body.booktoken, body.summary, "http://soylatte.kr:5000/"+file.path, datas[0].usertoken], (err)=>{
                     if(err) throw err
                     else {
-                        db.sql.query('SELECT count FROM photobook WHERE booktoken = ?', [body.booktoken], (err, data)=>{
+                        db.sql.query('SELECT * FROM photobook WHERE booktoken = ?', [body.booktoken], (err, data)=>{
                             console.log(data[0].count)
-                            if(err) throw err
+                            if(err) throw err;
                             else if(data[0]){
-                                count = data[0].count+1
+                                var count = data[0].count+1
                                 console.log(count)
+                                if(data[0].count == 0){
+                                    db.sql.query('UPDATE photobook SET photo = ?  WHERE booktoken = ?', ["http://soylatte.kr:5000/"+file.path, body.booktoken], (err)=>{
+                                        if(err) throw err
+                                    })
+                                }
                                 db.sql.query('UPDATE photobook SET count = ? WHERE booktoken = ?', [count, body.booktoken], (err)=>{
                                     if(err) throw err
                                     else{
@@ -138,40 +143,6 @@ function photobook(app, db, multer, RandomString, async, sleep) {
                 res.send(200, [])
             }
         })
-        // async.waterfall(
-        //     [
-        //         function (callback){
-        //             console.log("!!!!!!!!!!!!!!!!!!!!!!")
-        //             db.sql.query('SELECT * FROM photobook WHERE usertoken = ?', [body.usertoken], (err, data) => {
-        //                 if (data[0]) {
-        //                     console.log(data[0])
-        //                     callback(null, data)
-        //                 }
-        //             })
-        //         },
-        //         function (data, callback) {
-        //             console.log('@@@@@@@@@@@@@@@@@@@@@@@')
-        //             for (var i = 0; i < data.length; i++) {
-        //                 db.sql.query('SELECT photo FROM photo WHERE booktoken = ?', [data[i].booktoken], (err, datas) => {
-        //                     if (datas[0]) {
-        //                         //console.log(datas)
-        //                         for (var i = 0; i < datas.length; i++) {
-        //                             array.push(datas[i].photo)
-        //                             console.log(array)
-        //                             callback(null)
-        //                         }
-        //                     }
-        //                 })
-        //             }
-        //             console.log('@@@@@@@@@@@@@@@@@@@@@@@')
-        //         }
-        //     ],
-        //     function (err) {
-        //         if(err) throw err
-        //         console.log(array)
-        //         res.send(array)
-        //     }
-        // )
     })
 
     app.post('/photobook/search', (req, res)=>{

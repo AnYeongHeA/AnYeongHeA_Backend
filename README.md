@@ -130,7 +130,7 @@
 >Return Values
 >>Success
      
-     HTTP : 200, JSONArray(사진들)
+     HTTP : 200, Array(사진들)
      
 #### /photobook/photo/all (DB에 업로드 되어있는 모든 사진리스트)
 >Requiring Params
