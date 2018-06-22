@@ -31,7 +31,7 @@ function photobook(app, db, multer, RandomString, async, sleep) {
 
         date = yyyy+"."+mm+"."+dd
 
-        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count, usertoken) VALUES (?,?,?,?,?,?,?)', [body.name, "", body.summary, date, RandomString.generate(10), 0, body.usertoken], (err)=>{
+        db.sql.query('INSERT INTO photobook (name, photo, summary, since, booktoken, count, usertoken) VALUES (?,?,?,?,?,?,?)', [body.name, "https://www.sgu.ac.kr/_res/sgu_mobile/img/common/prepare.jpg", body.summary, date, RandomString.generate(10), 0, body.usertoken], (err)=>{
             if(err) throw err
             else {
                 res.send(200, {success:true, message:"사진첩을 새로 생성했습니다."})

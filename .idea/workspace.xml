@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5ec3c708-795c-4ec0-9bc7-8e0c2a5198c7" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/photobook.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/photobook.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -39,8 +38,8 @@
       <file leaf-file-name="photobook.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/photobook.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+            <state relative-caret-position="453">
+              <caret line="33" column="201" selection-start-line="33" selection-start-column="201" selection-end-line="33" selection-end-column="201" />
             </state>
           </provider>
         </entry>
@@ -175,12 +174,12 @@
       <workItem from="1529383014375" duration="1267000" />
       <workItem from="1529384351340" duration="5030000" />
       <workItem from="1529577504052" duration="902000" />
-      <workItem from="1529623507645" duration="581000" />
+      <workItem from="1529623507645" duration="1805000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23763000" />
+    <option name="totallyTimeSpent" value="24987000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="962" extended-state="0" />
@@ -430,8 +429,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/photobook.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="453">
+          <caret line="33" column="201" selection-start-line="33" selection-start-column="201" selection-end-line="33" selection-end-column="201" />
         </state>
       </provider>
     </entry>
