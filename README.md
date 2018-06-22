@@ -80,7 +80,6 @@
 >Requiring Params
 
     name : 사진첩이름
-    file : 사진 (사진첩 배경)
     summary : 사진첩설명
     usertoken : 사진첩을 만든 유저의 토큰
     
